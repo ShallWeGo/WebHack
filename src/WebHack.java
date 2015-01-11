@@ -37,6 +37,7 @@ public class WebHack {
     private static final String PATH_TRAINEDPIC = "trainedpic";
     private static final String URL_TRAINPIC = "http://bm.scs.gov.cn/2015/UserControl/Student/GradeQuery.aspx";		//首页的网址
     private static final String URL_GRADEQUERY = "http://bm.scs.gov.cn/2015/UserControl/Student/GradeQuery.aspx";	// 查询时提交的网址
+    private static final String URL_REFERER = "http://bm.scs.gov.cn/2015/UserControl/Student/GradeQuery.aspx";
     private static Map<BufferedImage, String> trainedMap = null;
     
     /*
@@ -292,6 +293,14 @@ public class WebHack {
         conn.setRequestMethod(SERVLET_POST);
         conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
         conn.setRequestProperty("Cookie", "BIGipServergk_pool=2859663626.38943.0000");
+        conn.setRequestProperty("Referer", URL_REFERER);
+        conn.setRequestProperty("Origin", "http://bm.scs.gov.cn");
+        conn.setRequestProperty("Host", "bm.scs.gov.cn");
+        conn.setRequestProperty("Connection", "keep-alive");
+        conn.setRequestProperty("Cache-Control","max-age=0");
+        conn.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+        conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
+        conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
         conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36");
         conn.setDoOutput(true);
         byte[] bypes = params.toString().getBytes();
@@ -330,9 +339,11 @@ public class WebHack {
 			/* 获取验证码 */
 			String code = getAllOcr(result.get(0).get("pic"));
 			/* 设置 参数    */
-	        params.append("btnView=成绩查询&").append("txtIdKey=").append(ID).append("&txtZkzh=").
-	        		append(serial).append("&txtCheckId=").append(code).append("&__VIEWSTATE=").
-	        		append(result.get(0).get("state")).append("&__EVENTVALIDATION=").append(result.get(0).get("valid"));
+	        params.append("__EVENTTARGET=&__EVENTARGUMENT=").
+	        		append("&btnView=成绩查询").append("&txtIdKey=").append(ID).
+	        		append("&txtZkzh=").append(serial).append("&txtCheckId=").append(code).
+	        		append("&__VIEWSTATE=").append(result.get(0).get("state")).
+	        		append("&__EVENTVALIDATION=").append(result.get(0).get("valid"));
 	        String grade = GradeQuery(params);
 			Thread.sleep(TIME_QUERY);	// 防止过多发送
 	        if(grade.indexOf("验证码输入错误，请您重新输入！")!=-1){	
@@ -357,7 +368,7 @@ public class WebHack {
 	 */
 	public static void BatchHacking() throws Exception{
 		//Long[] idArray = {410927198912262014L};
-		Long[] idArray = {370725199006172592L, 372929198504131826L, 371202198103080336L, 410927198912262014L,370685198911022646L};
+		Long[] idArray = {370685198911022646L,370725199006172592L, 372929198504131826L, 371202198103080336L, 410927198912262014L};
 		Long serial = 819000000L;
 		Long Limits = 350L;
 		/* 加载图片库  */
